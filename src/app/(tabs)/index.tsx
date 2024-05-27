@@ -1,6 +1,6 @@
 
 
-import {  View  } from 'react-native';
+import {  FlatList, TouchableOpacity, View  } from 'react-native';
 import products from '@/assets/data/products';
 import ProductListItem from '../../components/ProductListItem'
 
@@ -8,12 +8,15 @@ import ProductListItem from '../../components/ProductListItem'
 
 export default function MenuScreen() {
   return (
-    <View>
-      <ProductListItem product={products[1]} />
-      <ProductListItem product={products[1]} />
-      <ProductListItem product={products[1]} />
-      <ProductListItem product={products[1]} />
-    </View>
+    <FlatList
+    data={products}
+    renderItem={({item}) => (
+        <ProductListItem key={item.id} product={item} />
+    )}
+    numColumns={2}
+    contentContainerStyle={{gap:10, padding:10}}
+    columnWrapperStyle={{gap:10}}
+    />
   );
 }
 

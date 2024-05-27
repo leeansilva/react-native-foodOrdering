@@ -5,25 +5,23 @@ import Colors from '../constants/Colors';
 
 export default function ProductListItem({product}) {
     return (
-      <>
-      {/* {products.map((product, index)=> ( */}
           <View style={styles.container}>
   
-            <Image source={{uri: product.image}} style={styles.image} />
+            <Image resizeMode='contain' source={{uri: product.image}} style={styles.image} />
   
             <Text style={styles.title} >{product.name}</Text>
             <Text style={styles.price} >${product.price}</Text>
           </View>
-      {/* ))} */}
-      </>
     );
   }
 
   const styles = StyleSheet.create({
     container: {
+      flex: 1,
       padding: 10,
       backgroundColor: 'white',
-      borderRadius: 20
+      borderRadius: 20,
+      maxWidth: '50%'
     },
     image:{
       width: '100%',
