@@ -1,8 +1,9 @@
 
 
 import {  FlatList, TouchableOpacity, View  } from 'react-native';
+
+import ProductListItem from '../../../components/ProductListItem'
 import products from '@/assets/data/products';
-import ProductListItem from '../../components/ProductListItem'
 
 
 

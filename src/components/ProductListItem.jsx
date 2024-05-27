@@ -1,17 +1,21 @@
 import React from 'react'
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
+import { Link } from 'expo-router';
 
 
 export default function ProductListItem({product}) {
     return (
-          <View style={styles.container}>
+      <Link href={`/menu/${product.id}`} asChild>
+          <Pressable style={styles.container}>
   
             <Image resizeMode='contain' source={{uri: product.image}} style={styles.image} />
   
             <Text style={styles.title} >{product.name}</Text>
             <Text style={styles.price} >${product.price}</Text>
-          </View>
+   
+          </Pressable>
+        </Link>
     );
   }
 
