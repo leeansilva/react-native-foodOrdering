@@ -1,12 +1,14 @@
 import React from 'react'
 import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import Colors from '../constants/Colors';
-import { Link } from 'expo-router';
+import { Link, useSegments } from 'expo-router';
 
 
 export default function ProductListItem({product}) {
+  const segments = useSegments();
+
     return (
-      <Link href={`/menu/${product.id}`} asChild>
+      <Link href={`/${segments[0]}/menu/${product.id}`} asChild>
           <Pressable style={styles.container}>
   
             <Image resizeMode='contain' source={{uri: product.image}} style={styles.image} />
