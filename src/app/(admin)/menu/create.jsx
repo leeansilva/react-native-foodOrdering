@@ -1,15 +1,18 @@
 import React, { useState } from 'react'
-import { Text, View, StyleSheet,TextInput, Image } from 'react-native'
+import { Text, View, StyleSheet,TextInput, Image, Alert } from 'react-native'
 import Button from '../../../components/Button'
 import Colors from '../../../constants/Colors';
 import * as ImagePicker from 'expo-image-picker';
-import { Stack } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 
 export default function CreateProductScreen() {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [errors, setErrors] = useState('');
     const [image, setImage] = useState(null);
+
+    const {id} = useLocalSearchParams();
+    const isUpdating = !!id;
 
     const validateInputs =() =>{
         setErrors('')
@@ -30,6 +33,11 @@ export default function CreateProductScreen() {
         setPrice('');
     }
 
+    const onSubmit = () =>{
+        isUpdating ?
+        onUpdate() : onCreate();
+    }
+
     const onCreate = () =>{
         if(!validateInputs()){
             return;
@@ -37,6 +45,30 @@ export default function CreateProductScreen() {
         console.warn('creating');
         resetFields();
         
+    }
+    
+    const onUpdate = () =>{
+        if(!validateInputs()){
+            return;
+        }
+        console.warn('creating');
+        resetFields();
+        
+    }
+    const onDelete = () =>{
+        console.warn('DELETE')
+    }
+    const onConfirmDelete = () =>{
+        Alert.alert('Confirm','Are you sure you want to delete this product?',[
+            {
+                text:'Cancel',
+            },
+            {
+                text:'Delete',
+                style:'destructive',
+                onPress: onDelete
+            }
+        ])
     }
 
     const pickImage = async () => {
@@ -55,7 +87,7 @@ export default function CreateProductScreen() {
 
   return (
     <View style={styles.container}>
-        <Stack.Screen options={{title:'Create product'}}/>
+        <Stack.Screen options={{title: isUpdating ? 'Update product':'Create product'}}/>
         <Image style={styles.image} source={{uri: image || 'https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/extravaganzza.png'}}  />
         <Text onPress={pickImage} style={styles.textButton}>Select Image</Text>
 
@@ -65,7 +97,9 @@ export default function CreateProductScreen() {
         <Text style={styles.label}>Price ($)</Text>
         <TextInput value={price} onChangeText={setPrice} keyboardType='numeric' placeholder='9.99' style={styles.input} />
         <Text style={styles.errors}>{errors}</Text>
-        <Button text='create' onPress={onCreate}/>
+        <Button text={isUpdating ? 'Update' : 'Create'} onPress={onSubmit}/>
+
+        {isUpdating && <Text style={styles.deleteButton} onPress={onConfirmDelete}>Delete</Text>}
     </View>
   )
 }
@@ -99,6 +133,12 @@ const styles = StyleSheet.create({
     textButton:{
         fontWeight:'bold',
         color: Colors.light.tint,
+        alignSelf:'center',
+        marginVertical: 10
+    },
+    deleteButton:{
+        fontWeight:'bold',
+        color: 'red',
         alignSelf:'center',
         marginVertical: 10
     }
